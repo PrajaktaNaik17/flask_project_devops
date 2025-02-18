@@ -1,0 +1,21 @@
+# Python virtual environment (if you're using Python)
+venv/
+
+# Terraform directories and state files
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
+
+# Terraform provider files
+.terraform.lock.hcl
+**/.terraform/*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
