@@ -32,7 +32,8 @@ pipeline {
 
         stage('Push Docker Image to Docker Hub') {
             steps {
-                withDockerRegistry([credentialsId: 'prajaktanaik17', url: '']) {
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
+                    sh 'docker login -u prajaktanaik17 -p $DOCKER_PASSWORD'
                     sh 'docker push $DOCKER_IMAGE'
                 }
             }
@@ -41,7 +42,7 @@ pipeline {
         stage('Deploy to AWS') {
             steps {
                 sshagent(['aws-ssh-key']) {
-                    sh 'ssh -o StrictHostKeyChecking=no ec2-user13.235.81.36 "docker pull $DOCKER_IMAGE && docker run -d -p 9090:9090 $DOCKER_IMAGE"'
+                    sh 'ssh -o StrictHostKeyChecking=no ec2-user@13.235.81.36 "docker pull $DOCKER_IMAGE && docker run -d -p 9090:9090 $DOCKER_IMAGE"'
                 }
             }
         }
