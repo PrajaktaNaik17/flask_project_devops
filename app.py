@@ -1,15 +1,19 @@
-from flask import Flask
+from prometheus_client import Counter, generate_latest
+from flask import Flask, Response
+
 app = Flask(__name__)
 
-@app.route('/')
+# Define a simple metric
+REQUEST_COUNT = Counter("request_count", "Number of requests received")
+
+@app.route("/")
 def home():
-    return "Hello, DevOps!"
+    REQUEST_COUNT.inc()
+    return "Hello, World!"
 
-@app.route('/metrics')
+@app.route("/metrics")
 def metrics():
-    # In a real app, you might integrate Prometheus metrics here
-    return "app_requests_total 1024"
+    return Response(generate_latest(), mimetype="text/plain")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
-
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
